@@ -246,7 +246,7 @@ body {
 
 .ck-auth-login {
   background: #1f2937;
-  color: #fff !important;
+  color: #1b1f23 !important;
 }
 
 .ck-auth-login:hover {
@@ -1508,5 +1508,4 @@ body {
     padding: 1rem;
   }
 }
-
 
