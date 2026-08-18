@@ -35,8 +35,13 @@ const listingSchema = new Schema({
     }
 });
 
+listingSchema.index({location : 1});
+listingSchema.index({country : 1});
+listingSchema.index({price : 1});
+listingSchema.index({title: "text", description : "text"});
+
 listingSchema.post('findOneAndDelete' , async(listing)=>{   /////post mongoose middleware
-    if(listing.reviews.length){
+    if(listing?.reviews?.length){
         await Review.deleteMany({_id : {$in : listing.reviews}});
     }
 });

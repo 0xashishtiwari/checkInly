@@ -38,6 +38,12 @@ app.use(express.json());
 app.use(methodOverride('_method'))
 app.engine('ejs', ejsMate);
 
+app.use((req, res, next)=>{
+  res.locals.query = req.query;
+  next();
+})
+
+
 
 const store = MongoStore.create({
     mongoUrl: dbUrl,

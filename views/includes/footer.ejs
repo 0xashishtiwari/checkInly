@@ -1,14 +1,36 @@
-<footer>
-    <div class="f-info">
-        <div class="f-info-socials">
-            <i class="fa-brands fa-square-facebook"></i>
-            <i class="fa-brands fa-square-instagram"></i>
-            <i class="fa-brands fa-linkedin"></i>
+<footer class="ck-footer mt-4">
+    <div class="container ck-footer-grid">
+        <div class="ck-footer-brand">
+            <a class="ck-footer-logo" href="/listings">
+                <span class="ck-footer-logo-icon"><i class="fa-regular fa-compass"></i></span>
+                <span>CheckInly</span>
+            </a>
+            <p class="ck-footer-text">A community-first marketplace for memorable stays and trusted hosts.</p>
         </div>
-        <div class="f-info-brand">&copy; CheckInly Private Limited</div>
-        <div class="f-info-links">
+
+        <div class="ck-footer-col">
+            <h6>Explore</h6>
+            <a href="/listings">All Listings</a>
+            <a href="/listings/new">Host Your Place</a>
+        </div>
+
+        <div class="ck-footer-col">
+            <h6>Legal</h6>
             <a href="/privacy">Privacy</a>
             <a href="/terms">Terms</a>
         </div>
+
+        <div class="ck-footer-col">
+            <h6>Follow</h6>
+            <div class="ck-footer-socials">
+                <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="ck-footer-bottom">
+        <span>&copy; <%= new Date().getFullYear() %> CheckInly Private Limited. All rights reserved.</span>
     </div>
 </footer>

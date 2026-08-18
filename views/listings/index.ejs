@@ -1,131 +1,272 @@
 <% layout('/layouts/boilerplate') %>
 
-    <style>
-        #filters {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-        }
+    <% const current=Number(currentPage) || 1; const pages=Number(totalPages) || 1; const params={ search: search || ""
+        , location: location || "" , country: country || "" , minPrice: minPrice || "" , maxPrice: maxPrice || "" ,
+        sort: sort || "newest" }; const buildPageUrl=(pageNo)=> {
+        const q = new URLSearchParams({ ...params, page: String(pageNo) });
+        return `/listings?${q.toString()}`;
+        };
+        %>
 
-        .filter {
-            text-align: center;
-            margin-right: 2rem;
-            margin-top: 2rem;
-            opacity: 0.7;
-        }
+        <section class="catalog-shell">
+            <div class="catalog-bg-shape catalog-bg-shape-one"></div>
+            <div class="catalog-bg-shape catalog-bg-shape-two"></div>
 
-        .filter:hover {
-            opacity: 1;
-            transition: 0.2s linear;
-            cursor: pointer;
-        }
+            <div class="container py-4">
+                <div class="catalog-hero">
+                    <div>
+                        <p class="catalog-kicker">DISCOVER STAYS</p>
+                        <h1 class="catalog-title ">Find your next perfect place.</h1>
+                        <!-- <p class="catalog-subtitle">Search by location, country, and budget to discover curated stays from hosts around the world.</p> -->
+                    </div>
 
-        .filter p {
-            font-size: 0.8rem;
-        }
-        .tax-toggle{
-            border: 1px solid rgb(106, 105, 105);
-            border-radius: 1rem;
-            margin-left: 350px;
-            /* margin-top: 1rem; */
-            height: 3.5rem;
-            padding: 1rem;
-            display: flex;
-            align-items: center;
-            opacity: 0.7;
-        }
-        .tax-toggle:hover{
-            opacity: 1;
-            cursor: pointer;
-            
-        }
-        .tax-info{
-            display: none;
-        }
-    </style>
-
-    <div id="filters">
-        <div class="filter">
-            <div>
-                <i class="fa-solid fa-fire"></i>
-            </div>
-            <p>Trending</p>
-        </div>
-        <div class="filter">
-            <div>
-                <i class="fa-solid fa-bed"></i>
-            </div>
-            <p>Rooms</p>
-        </div>
-        <div class="filter">
-            <div>
-              <i class="fa-solid fa-city"></i>
-            </div>
-            <p>Iconic cities</p>
-        </div>
-        <div class="filter">
-            <div>
-               <i class="fa-solid fa-globe"></i>
-            </div>
-            <p>Surfing</p>
-        </div>
-        <div class="filter">
-            <div>
-               <i class="fa-solid fa-mountain-city"></i>
-            </div>
-            <p>Mountains</p>
-        </div>
-        <div class="filter">
-            <div>
-               <i class="fa-brands fa-fort-awesome"></i>
-            </div>
-            <p>Castles</p>
-        </div>
-
-        <div class="tax-toggle">
-            <div class="form-check-reverse form-switch">
-          <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-          <label class="form-check-label" for="flexSwitchCheckDefault">Display total after taxes</label>
-              </div>
-        </div>
-        
-    </div>
-
-    <div class="row row-cols-lg-3  rol-cols-md-2  row-cols-sm-1 mt-3">
-        <%for(let listing of allListings){ %>
-            <a href="/listings/<%=listing._id%>" class="listing-link">
-                <div class="card col">
-                    <img src="<%=listing.image.url%>" class="card-img-top" alt="listing_image" style="height: 20rem;">
-                    <div class="card-img-overlay"></div>
-                    <div class="card-body">
-
-                        <p class="card-text">
-                            <b>
-                                <%= listing.title%>
-                            </b> <br>
-                            &#8377;<%= listing.price.toLocaleString('en-IN')%>/night
-                            <i class="tax-info"> &nbsp; &nbsp;+18% GST</i>
-                        </p>
-
+                    <div class="catalog-tax-toggle">
+                        <div class="form-check form-switch m-0">
+                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Display total after
+                                taxes</label>
+                        </div>
                     </div>
                 </div>
-            </a>
 
-            <%} %>
-    </div>
+                <div class="catalog-filters-row">
+                    <div class="catalog-filters" aria-hidden="true">
+                        <div class="catalog-filter-chip"><i class="fa-solid fa-fire"></i><span>Trending</span></div>
+                        <div class="catalog-filter-chip"><i class="fa-solid fa-bed"></i><span>Rooms</span></div>
+                        <div class="catalog-filter-chip"><i class="fa-solid fa-city"></i><span>Iconic Cities</span>
+                        </div>
+                        <div class="catalog-filter-chip"><i class="fa-solid fa-water"></i><span>Surfing</span></div>
+                        <div class="catalog-filter-chip"><i class="fa-solid fa-mountain-city"></i><span>Mountains</span>
+                        </div>
+                        <div class="catalog-filter-chip"><i class="fa-solid fa-chess-rook"></i><span>Castles</span>
+                        </div>
+                    </div>
+                </div>
 
-    <script>
-        let taxSwitch = document.getElementById('flexSwitchCheckDefault')
-        taxSwitch.addEventListener('click' , ()=>{
-            let taxinfo = document.getElementsByClassName('tax-info');
-            // console.log(taxinfo);
-            //    taxinfo.style.display = inline
-            for(info of taxinfo){
-                if(info.style.display == "none")
-                info.style.display =  "inline"
-               else
-               info.style.display =  "none"
+              
 
+                <div class="catalog-toolbar">
+
+                    <div>
+                        <!-- <p class="catalog-results-count mb-0">
+                            <%= total %> listing<%= Number(total)===1 ? '' : 's' %> found
+                        </p> -->
+
+                        <% if (search) { %>
+                            <p class="catalog-results-meta mb-0">
+                                Results for "<%= search %>"
+                            </p>
+                            <% } %>
+                    </div>
+
+                    <button type="button" class="btn catalog-filter-button" data-bs-toggle="offcanvas"
+                        data-bs-target="#filtersPanel" aria-controls="filtersPanel">
+                        <i class="fa-solid fa-sliders"></i>
+                        Filters
+                    </button>
+
+                </div>
+
+                <% if (allListings.length) { %>
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4 mt-1">
+                        <% for (let listing of allListings) { %>
+                            <div class="col">
+                                <a href="/listings/<%= listing._id %>" class="listing-link catalog-link">
+                                    <div class="card catalog-card h-100">
+                                        <img src="<%= listing.image.url %>" class="card-img-top catalog-card-image"
+                                            alt="listing image">
+                                        <div class="card-img-overlay"></div>
+                                        <div class="card-body catalog-card-body">
+                                            <p class="catalog-card-title">
+                                                <%= listing.title %>
+                                            </p>
+                                            <p class="catalog-card-meta">
+                                                <%= listing.location %>, <%= listing.country %>
+                                            </p>
+                                            <p class="catalog-card-price">
+                                                &#8377;<%= listing.price.toLocaleString('en-IN') %>/night
+                                                    <span class="tax-info"> +18% GST</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <% } %>
+                    </div>
+                    <% } else { %>
+                        <div class="catalog-empty">
+                            <i class="fa-regular fa-compass"></i>
+                            <h3>No listings found</h3>
+                            <p>Try changing your filters or search term to discover more stays.</p>
+                            <a href="/listings" class="btn catalog-btn-primary">View All Listings</a>
+                        </div>
+                        <% } %>
+
+                            <% if (pages> 1) { %>
+                                <nav aria-label="Listings pagination" class="catalog-pagination-wrap">
+                                    <ul class="pagination catalog-pagination">
+                                        <li class="page-item <%= current === 1 ? 'disabled' : '' %>">
+                                            <a class="page-link"
+                                                href="<%= current === 1 ? '#' : buildPageUrl(current - 1) %>">Previous</a>
+                                        </li>
+
+                                        <% for (let p=1; p <=pages; p++) { %>
+                                            <li class="page-item <%= p === current ? 'active' : '' %>">
+                                                <a class="page-link" href="<%= buildPageUrl(p) %>">
+                                                    <%= p %>
+                                                </a>
+                                            </li>
+                                            <% } %>
+
+                                                <li class="page-item <%= current === pages ? 'disabled' : '' %>">
+                                                    <a class="page-link"
+                                                        href="<%= current === pages ? '#' : buildPageUrl(current + 1) %>">Next</a>
+                                                </li>
+                                    </ul>
+                                </nav>
+                                <% } %>
+            </div>
+        </section>
+
+
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="filtersPanel" aria-labelledby="filtersPanelLabel">
+
+            <div class="offcanvas-header">
+
+                <h5 class="offcanvas-title" id="filtersPanelLabel">
+                    Filters
+                </h5>
+
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+
+            </div>
+
+
+            <div class="offcanvas-body">
+
+                <form method="GET" action="/listings">
+
+                    <!-- Preserve search -->
+                    <input type="hidden" name="search" value="<%= search || '' %>">
+
+
+                    <!-- Location -->
+                    <div class="mb-4">
+
+                        <label for="filter-location" class="form-label">
+                            Location
+                        </label>
+
+                        <input id="filter-location" type="text" name="location" class="form-control"
+                            placeholder="Bhopal" value="<%= location || '' %>">
+
+                    </div>
+
+
+                    <!-- Country -->
+                    <div class="mb-4">
+
+                        <label for="filter-country" class="form-label">
+                            Country
+                        </label>
+
+                        <input id="filter-country" type="text" name="country" class="form-control" placeholder="India"
+                            value="<%= country || '' %>">
+
+                    </div>
+
+
+                    <!-- Price -->
+                    <div class="mb-4">
+
+                        <label class="form-label">
+                            Price range
+                        </label>
+
+                        <div class="row g-2">
+
+                            <div class="col">
+
+                                <input type="number" name="minPrice" class="form-control" placeholder="Min" min="0"
+                                    value="<%= minPrice || '' %>">
+
+                            </div>
+
+                            <div class="col">
+
+                                <input type="number" name="maxPrice" class="form-control" placeholder="Max" min="0"
+                                    value="<%= maxPrice || '' %>">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Sort -->
+                    <div class="mb-4">
+
+                        <label for="filter-sort" class="form-label">
+                            Sort by
+                        </label>
+
+                        <select id="filter-sort" name="sort" class="form-select">
+
+                            <option value="newest" <%=sort==="newest" ? "selected" : "" %>
+                                >
+                                Newest
+                            </option>
+
+                            <option value="oldest" <%=sort==="oldest" ? "selected" : "" %>
+                                >
+                                Oldest
+                            </option>
+
+                            <option value="price-low" <%=sort==="price-low" ? "selected" : "" %>
+                                >
+                                Price: Low to High
+                            </option>
+
+                            <option value="price-high" <%=sort==="price-high" ? "selected" : "" %>
+                                >
+                                Price: High to Low
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Actions -->
+                    <div class="d-flex gap-2">
+
+                        <button type="submit" class="btn btn-dark flex-grow-1">
+                            Apply Filters
+                        </button>
+
+                        <a href="<%= search ? '/listings?search=' + encodeURIComponent(search) : '/listings' %>"
+                            class="btn btn-outline-secondary">
+                            Reset
+                        </a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+
+        <script>
+            const taxSwitch = document.getElementById('flexSwitchCheckDefault');
+            if (taxSwitch) {
+                taxSwitch.addEventListener('change', () => {
+                    const taxinfo = document.getElementsByClassName('tax-info');
+                    for (const info of taxinfo) {
+                        info.style.display = taxSwitch.checked ? 'inline' : 'none';
+                    }
+                });
             }
-        })
-    </script>
+        </script>

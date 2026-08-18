@@ -1,33 +1,45 @@
 <% layout('/layouts/boilerplate') %>
 
-    <section class="container mt-5">
-        <div class="row justify-content-center">
-            <h2 class="col-12 text-center mb-4">Login</h2>
-            <div class="col-md-6">
+<section class="signup-shell">
+    <div class="signup-bg-shape signup-bg-shape-one"></div>
+    <div class="signup-bg-shape signup-bg-shape-two"></div>
+
+    <div class="signup-grid container py-5">
+        <div class="signup-intro">
+            <p class="signup-kicker">WELCOME BACK</p>
+            <h1 class="signup-title">Log in to continue your travel and hosting journey.</h1>
+            <p class="signup-subtitle">Access saved listings, manage your posts, and pick up right where you left off.</p>
+
+            <ul class="signup-benefits list-unstyled">
+                <li><i class="fa-solid fa-heart"></i> Revisit your favorite stays in seconds.</li>
+                <li><i class="fa-solid fa-bell-concierge"></i> Manage listing updates and guest requests.</li>
+                <li><i class="fa-solid fa-clock-rotate-left"></i> Continue your plans without starting over.</li>
+            </ul>
+        </div>
+
+        <div class="signup-card-wrap">
+            <div class="signup-card">
+                <h2 class="signup-card-title">Log in</h2>
+                <p class="signup-card-note">Welcome back. Please sign in to your account.</p>
+
                 <form action="/login" method="POST" class="needs-validation" novalidate>
-
-                    <!-- Username -->
                     <div class="mb-3">
-                        <label for="username" class="form-label">Username</label>
-                        <input type="text" id="username" name="username" class="form-control" required
-                            autocomplete="username" aria-describedby="usernameFeedback">
-                       
+                        <label for="username" class="form-label signup-label">Username</label>
+                        <input type="text" id="username" name="username" class="form-control signup-input" required
+                            autocomplete="username" aria-describedby="usernameFeedback" placeholder="Enter your username">
                     </div>
 
-                   
-
-                    <!-- Password -->
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" id="password" name="password" class="form-control" required
-                            autocomplete="new-password" aria-describedby="passwordHelp">
-                       
+                    <div class="mb-4">
+                        <label for="password" class="form-label signup-label">Password</label>
+                        <input type="password" id="password" name="password" class="form-control signup-input" required
+                            autocomplete="current-password" aria-describedby="passwordHelp" placeholder="Enter your password">
                     </div>
 
-                    <!-- Submit -->
-                    <button type="submit" class="btn btn-success w-100">Login</button>
-
+                    <button type="submit" class="btn signup-btn w-100">Log in</button>
                 </form>
+
+                <p class="signup-footer-text">New to CheckInly? <a href="/signup">Create an account</a></p>
             </div>
         </div>
-    </section>
+    </div>
+</section>

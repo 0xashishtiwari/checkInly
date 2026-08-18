@@ -1,45 +1,60 @@
 <% layout('/layouts/boilerplate') %>
 
-    <section class="container mt-5">
-        <div class="row justify-content-center">
-            <h2 class="col-12 text-center mb-4">Sign Up on WanderLust</h2>
-            <div class="col-md-6">
-                <form action="/signup" method="POST" class="needs-validation" novalidate>
+<section class="signup-shell">
+    <div class="signup-bg-shape signup-bg-shape-one"></div>
+    <div class="signup-bg-shape signup-bg-shape-two"></div>
 
-                    <!-- Username -->
+    <div class="signup-grid container py-5">
+        <div class="signup-intro">
+            <p class="signup-kicker">WELCOME TO CHECKINLY</p>
+            <h1 class="signup-title">Create your account and start hosting or exploring today.</h1>
+            <p class="signup-subtitle">Save your favorite stays, publish your own place, and manage bookings from one dashboard.</p>
+
+            <ul class="signup-benefits list-unstyled">
+                <li><i class="fa-solid fa-location-dot"></i> Discover unique stays across cities and hidden gems.</li>
+                <li><i class="fa-solid fa-house"></i> List your property in just a few steps.</li>
+                <li><i class="fa-solid fa-shield-heart"></i> Fast, secure, and smooth booking flow.</li>
+            </ul>
+        </div>
+
+        <div class="signup-card-wrap">
+            <div class="signup-card">
+                <h2 class="signup-card-title">Sign up</h2>
+                <p class="signup-card-note">It only takes a minute to get started.</p>
+
+                <form action="/signup" method="POST" class="needs-validation" novalidate>
                     <div class="mb-3">
-                        <label for="username" class="form-label">Username</label>
-                        <input type="text" id="username" name="username" class="form-control" required
-                            autocomplete="username" aria-describedby="usernameFeedback">
+                        <label for="username" class="form-label signup-label">Username</label>
+                        <input type="text" id="username" name="username" class="form-control signup-input" required
+                            autocomplete="username" aria-describedby="usernameFeedback" placeholder="e.g. traveler_aneesh">
                         <div id="usernameFeedback" class="valid-feedback">
                             Looks good!
                         </div>
                     </div>
 
-                    <!-- Email -->
                     <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" id="email" name="email" class="form-control" required autocomplete="email"
-                            aria-describedby="emailHelp">
+                        <label for="email" class="form-label signup-label">Email</label>
+                        <input type="email" id="email" name="email" class="form-control signup-input" required autocomplete="email"
+                            aria-describedby="emailHelp" placeholder="you@example.com">
                         <div class="invalid-feedback">
                             Please enter a valid email address.
                         </div>
                     </div>
 
-                    <!-- Password -->
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" id="password" name="password" class="form-control" required
-                            autocomplete="new-password" aria-describedby="passwordHelp">
+                    <div class="mb-4">
+                        <label for="password" class="form-label signup-label">Password</label>
+                        <input type="password" id="password" name="password" class="form-control signup-input" required
+                            autocomplete="new-password" aria-describedby="passwordHelp" placeholder="Create a strong password">
                         <div class="invalid-feedback">
                             Please provide a password.
                         </div>
                     </div>
 
-                    <!-- Submit -->
-                    <button type="submit" class="btn btn-success w-100">Sign Up</button>
-
+                    <button type="submit" class="btn signup-btn w-100">Create account</button>
                 </form>
+
+                <p class="signup-footer-text">Already have an account? <a href="/login">Log in</a></p>
             </div>
         </div>
-    </section>
+    </div>
+</section>

@@ -1,71 +1,73 @@
 <% layout('/layouts/boilerplate') %>
 
-<div class="container py-4">
-  <div class="row justify-content-center">
-    <div class="col-md-8 col-lg-6">
+<section class="listing-shell">
+  <div class="listing-bg-shape listing-bg-shape-one"></div>
+  <div class="listing-bg-shape listing-bg-shape-two"></div>
 
-      <div class="card shadow-lg rounded p-4" style="max-width: 720px;" data-aos="fade-up" data-aos-duration="800">
-        <h3 class="mb-4 text-center fw-bold text-dark">Create a New Listing</h3>
+  <div class="container py-5 listing-grid">
+    <div class="listing-intro">
+      <p class="listing-kicker">HOST DASHBOARD</p>
+      <h1 class="listing-title">Create a listing that travelers instantly trust.</h1>
+      <p class="listing-subtitle">Add strong details, attractive pricing, and great photos to improve visibility and booking confidence.</p>
+
+      <ul class="list-unstyled listing-benefits">
+        <li><i class="fa-solid fa-pen-ruler"></i> A clear title helps guests understand your place quickly.</li>
+        <li><i class="fa-solid fa-camera-retro"></i> High quality visuals improve click-through rate.</li>
+        <li><i class="fa-solid fa-earth-asia"></i> Accurate location and country make discovery easier.</li>
+      </ul>
+    </div>
+
+    <div class="listing-card-wrap">
+      <div class="listing-card">
+        <h2 class="listing-card-title">New Listing</h2>
+        <p class="listing-card-note">Fill in the details below to publish your property.</p>
 
         <form method="post" action="/listings" class="needs-validation" novalidate enctype="multipart/form-data">
-
-          <!-- Title -->
-          <div class="mb-3" data-aos="fade-right" data-aos-delay="100">
-            <label for="title" class="form-label">Title</label>
-            <input name="listing[title]" type="text" class="form-control animate-input"
+          <div class="mb-3">
+            <label for="title" class="form-label listing-label">Title</label>
+            <input id="title" name="listing[title]" type="text" class="form-control listing-input"
               placeholder="Add a catchy title" required>
-              <div class="valid-feedback">Title looks good!</div>
+            <div class="valid-feedback">Title looks good!</div>
           </div>
 
-          <!-- Description -->
-          <div class="mb-3" data-aos="fade-left" data-aos-delay="150">
-            <label for="description" class="form-label">Description</label>
-            <textarea name="listing[description]" rows="4" class="form-control animate-input"
+          <div class="mb-3">
+            <label for="description" class="form-label listing-label">Description</label>
+            <textarea id="description" name="listing[description]" rows="4" class="form-control listing-input"
               placeholder="Brief description..." required></textarea>
-              <div class="invalid-feedback">Please enter a short description</div>
+            <div class="invalid-feedback">Please enter a short description</div>
           </div>
 
-          <!-- Image -->
-          <div class="mb-3" data-aos="fade-right" data-aos-delay="200">
-            <label for="image" class="form-label">Image</label>
-            <input name="listing[image]" type="file"  class="form-control animate-input" placeholder="Upload image"
-              required>
-              <div class="invalid-feedback">Please upload a image</div>
+          <div class="mb-3">
+            <label for="image" class="form-label listing-label">Image</label>
+            <input id="image" name="listing[image]" type="file" class="form-control listing-input" required>
+            <div class="invalid-feedback">Please upload an image</div>
           </div>
 
-          <!-- Price & Country -->
           <div class="row">
-            <div class="col-md-4 mb-3" data-aos="fade-up" data-aos-delay="250">
-              <label for="price" class="form-label">Price</label>
-              <input name="listing[price]" class="form-control animate-input" type="number" placeholder="e.g., 1200"
+            <div class="col-md-4 mb-3">
+              <label for="price" class="form-label listing-label">Price</label>
+              <input id="price" name="listing[price]" class="form-control listing-input" type="number" placeholder="e.g., 1200"
                 required>
-                <div class="invalid-feedback">Price should be valid</div>
+              <div class="invalid-feedback">Price should be valid</div>
             </div>
-            <div class="col-md-8 mb-3" data-aos="fade-up" data-aos-delay="300">
-              <label for="country" class="form-label">Country</label>
-              <input name="listing[country]" type="text" class="form-control animate-input" placeholder="e.g., India"
+            <div class="col-md-8 mb-3">
+              <label for="country" class="form-label listing-label">Country</label>
+              <input id="country" name="listing[country]" type="text" class="form-control listing-input" placeholder="e.g., India"
                 required>
-                  <div class="invalid-feedback">Country name should be valid</div>
+              <div class="invalid-feedback">Country name should be valid</div>
             </div>
           </div>
 
-          <!-- Location -->
-          <div class="mb-3" data-aos="fade-left" data-aos-delay="350">
-            <label for="location" class="form-label">Location</label>
-            <input name="listing[location]" type="text" class="form-control animate-input"
+          <div class="mb-4">
+            <label for="location" class="form-label listing-label">Location</label>
+            <input id="location" name="listing[location]" type="text" class="form-control listing-input"
               placeholder="e.g., Jaipur, Rajasthan" required>
-                <div class="invalid-feedback">Location should be valid</div>
+            <div class="invalid-feedback">Location should be valid</div>
           </div>
 
-          <!-- Button -->
-          <div class="d-flex justify-content-center mt-3" data-aos="zoom-in" data-aos-delay="400">
-           <button type="submit" class="btn btn-custom-red shadow-sm hover-zoom px-4">Add Listing</button>
-
-          </div>
-
+          <button type="submit" class="btn listing-btn w-100">Publish Listing</button>
         </form>
       </div>
-
     </div>
   </div>
-</div>
+</section>
