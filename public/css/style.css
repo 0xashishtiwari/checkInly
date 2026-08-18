@@ -1132,22 +1132,71 @@ body {
 }
 
 .catalog-pagination-wrap {
-  margin-top: 1.3rem;
+  margin-top: 1.4rem;
   display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
   justify-content: center;
 }
 
+.catalog-pagination-status {
+  margin: 0;
+  color: #4b5a71;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.catalog-pagination {
+  margin: 0;
+  padding: 0.35rem;
+  border: 1px solid #dbe3ef;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 0 10px 22px rgba(19, 28, 43, 0.08);
+}
+
 .catalog-pagination .page-link {
+  min-width: 2.45rem;
+  height: 2.45rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 0.7rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1;
+  background: transparent;
   color: #263246;
-  border-color: #d6deea;
+  border: 1px solid transparent;
   border-radius: 0.65rem !important;
   margin: 0 0.18rem;
+  transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.catalog-pagination .page-link:hover {
+  background: #f3f7ff;
+  border-color: #d0dbef;
+  color: #1d2b43;
+  transform: translateY(-1px);
 }
 
 .catalog-pagination .page-item.active .page-link {
-  background: #2f7cf8;
+  background: linear-gradient(90deg, #2269f4 0%, #3d8bff 100%);
   border-color: #2f7cf8;
   color: #fff;
+  box-shadow: 0 8px 16px rgba(47, 124, 248, 0.32);
+}
+
+.catalog-pagination .page-item.disabled .page-link {
+  color: #9aa7bc;
+  pointer-events: none;
+  background: transparent;
+}
+
+.catalog-page-ellipsis {
+  min-width: 2rem !important;
+  letter-spacing: 0.04em;
 }
 
 @media (max-width: 1199.98px) {
@@ -1188,6 +1237,24 @@ body {
 
   .catalog-card-image {
     height: 14.2rem !important;
+  }
+
+  .catalog-pagination-wrap {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .catalog-pagination {
+    border-radius: 1rem;
+    padding: 0.3rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .catalog-pagination .page-link {
+    min-width: 2.25rem;
+    height: 2.25rem;
+    margin: 0.12rem;
   }
 }
 
@@ -1509,3 +1576,425 @@ body {
   }
 }
 
+
+
+#map {
+    height: 400px;
+    width: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.show-map-card {
+    background: #fff;
+    padding: 24px;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+
+.catalog-results-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(350px, 0.9fr);
+    gap: 24px;
+    align-items: start;
+}
+
+.catalog-map-column {
+    position: sticky;
+    top: 80px;
+}
+
+#search-map {
+    width: 100%;
+    height: 650px;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+
+@media (max-width: 991px) {
+    .catalog-results-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .catalog-map-column {
+        position: relative;
+        top: 0;
+        order: -1;
+    }
+
+    #search-map {
+        height: 400px;
+    }
+}
+
+
+
+        #page-loader {
+            position: fixed;
+            inset: 0;
+
+            width: 100%;
+            height: 100%;
+
+            z-index: 999999;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #ffffff;
+
+            opacity: 1;
+            visibility: visible;
+
+            transition:
+                opacity 0.45s ease,
+                visibility 0.45s ease;
+        }
+
+        #page-loader.hide {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+
+        /* =================================
+           MAIN LOADER
+        ================================= */
+
+        .checkinly-loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            animation: loaderAppear 0.7s ease forwards;
+        }
+
+
+        /* =================================
+           LOCATION PIN
+        ================================= */
+
+        .loader-pin {
+            position: relative;
+
+            width: 96px;
+            height: 96px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: linear-gradient(
+                135deg,
+                #2563eb,
+                #06b6d4
+            );
+
+            border-radius: 50% 50% 50% 8%;
+
+            transform: rotate(-45deg);
+
+            box-shadow:
+                0 18px 40px rgba(37, 99, 235, 0.25);
+
+            animation: pinFloat 2.2s ease-in-out infinite;
+        }
+
+
+        /* Inner circle */
+
+        .loader-pin::before {
+            content: "";
+
+            position: absolute;
+
+            width: 70px;
+            height: 70px;
+
+            background: #ffffff;
+
+            border-radius: 50%;
+        }
+
+
+        /* =================================
+           HOUSE
+        ================================= */
+
+        .loader-house {
+            position: relative;
+
+            width: 42px;
+            height: 42px;
+
+            transform: rotate(45deg);
+
+            z-index: 2;
+        }
+
+
+        /* Roof */
+
+        .house-roof {
+            position: absolute;
+
+            top: 3px;
+            left: 5px;
+
+            width: 32px;
+            height: 32px;
+
+            background: #2563eb;
+
+            transform: rotate(45deg);
+
+            border-radius: 5px 0 5px 0;
+        }
+
+
+        /* House body */
+
+        .house-body {
+            position: absolute;
+
+            bottom: 2px;
+            left: 8px;
+
+            width: 27px;
+            height: 25px;
+
+            background: #2563eb;
+
+            border-radius: 2px;
+
+            z-index: 2;
+        }
+
+
+        /* Window */
+
+        .house-window {
+            position: absolute;
+
+            top: 6px;
+            left: 8px;
+
+            width: 7px;
+            height: 7px;
+
+            background: #ffffff;
+
+            border-radius: 1px;
+        }
+
+
+        /* Door */
+
+        .house-door {
+            position: absolute;
+
+            bottom: 0;
+            right: 4px;
+
+            width: 7px;
+            height: 12px;
+
+            background: #ffffff;
+
+            border-radius: 3px 3px 0 0;
+        }
+
+
+        /* =================================
+           BRAND
+        ================================= */
+
+        .loader-brand {
+            margin-top: 30px;
+
+            font-family:
+                "Plus Jakarta Sans",
+                sans-serif;
+
+            font-size: 36px;
+
+            font-weight: 800;
+
+            letter-spacing: -1.8px;
+
+            color: #172554;
+
+            animation:
+                brandFade 0.8s ease forwards;
+        }
+
+        .loader-brand span {
+            color: #2563eb;
+        }
+
+
+        /* =================================
+           TAGLINE
+        ================================= */
+
+        .loader-tagline {
+            margin-top: 8px;
+
+            font-family:
+                "Plus Jakarta Sans",
+                sans-serif;
+
+            font-size: 10px;
+
+            font-weight: 600;
+
+            letter-spacing: 4px;
+
+            color: #94a3b8;
+        }
+
+
+        /* =================================
+           PROGRESS BAR
+        ================================= */
+
+        .loader-progress {
+            position: relative;
+
+            width: 180px;
+            height: 4px;
+
+            margin-top: 26px;
+
+            overflow: hidden;
+
+            background: #e2e8f0;
+
+            border-radius: 20px;
+        }
+
+
+        .loader-progress-bar {
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 40%;
+            height: 100%;
+
+            border-radius: 20px;
+
+            background: linear-gradient(
+                90deg,
+                #2563eb,
+                #06b6d4
+            );
+
+            animation:
+                loaderProgress 1.4s
+                ease-in-out
+                infinite;
+        }
+
+
+        /* =================================
+           ANIMATIONS
+        ================================= */
+
+        @keyframes pinFloat {
+
+            0%,
+            100% {
+                transform:
+                    rotate(-45deg)
+                    translateY(0);
+            }
+
+            50% {
+                transform:
+                    rotate(-45deg)
+                    translateY(-10px);
+            }
+        }
+
+
+        @keyframes loaderProgress {
+
+            0% {
+                transform: translateX(-180%);
+            }
+
+            50% {
+                transform: translateX(180%);
+            }
+
+            100% {
+                transform: translateX(450%);
+            }
+        }
+
+
+        @keyframes loaderAppear {
+
+            from {
+                opacity: 0;
+                transform: scale(0.85);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+
+        @keyframes brandFade {
+
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        /* =================================
+           MOBILE
+        ================================= */
+
+        @media (max-width: 576px) {
+
+            .loader-pin {
+                width: 82px;
+                height: 82px;
+            }
+
+            .loader-pin::before {
+                width: 60px;
+                height: 60px;
+            }
+
+            .loader-brand {
+                font-size: 30px;
+            }
+
+            .loader-tagline {
+                font-size: 8px;
+                letter-spacing: 3px;
+            }
+
+            .loader-progress {
+                width: 150px;
+            }
+        }
+
+    

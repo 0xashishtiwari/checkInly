@@ -1,73 +1,142 @@
 <% layout('/layouts/boilerplate') %>
 
-<section class="listing-shell">
-  <div class="listing-bg-shape listing-bg-shape-one"></div>
-  <div class="listing-bg-shape listing-bg-shape-two"></div>
+<div class="container py-4 py-md-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-10 col-xl-9">
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-4 p-md-5">
+          <h1 class="h3 mb-1">New Listing</h1>
+          <p class="text-muted mb-4">Add the basic details and optional property information.</p>
 
-  <div class="container py-5 listing-grid">
-    <div class="listing-intro">
-      <p class="listing-kicker">HOST DASHBOARD</p>
-      <h1 class="listing-title">Create a listing that travelers instantly trust.</h1>
-      <p class="listing-subtitle">Add strong details, attractive pricing, and great photos to improve visibility and booking confidence.</p>
+          <form method="post" action="/listings" class="needs-validation" novalidate enctype="multipart/form-data">
+            <h2 class="h6 text-uppercase text-muted mb-3">Basic Details</h2>
 
-      <ul class="list-unstyled listing-benefits">
-        <li><i class="fa-solid fa-pen-ruler"></i> A clear title helps guests understand your place quickly.</li>
-        <li><i class="fa-solid fa-camera-retro"></i> High quality visuals improve click-through rate.</li>
-        <li><i class="fa-solid fa-earth-asia"></i> Accurate location and country make discovery easier.</li>
-      </ul>
-    </div>
-
-    <div class="listing-card-wrap">
-      <div class="listing-card">
-        <h2 class="listing-card-title">New Listing</h2>
-        <p class="listing-card-note">Fill in the details below to publish your property.</p>
-
-        <form method="post" action="/listings" class="needs-validation" novalidate enctype="multipart/form-data">
-          <div class="mb-3">
-            <label for="title" class="form-label listing-label">Title</label>
-            <input id="title" name="listing[title]" type="text" class="form-control listing-input"
-              placeholder="Add a catchy title" required>
-            <div class="valid-feedback">Title looks good!</div>
-          </div>
-
-          <div class="mb-3">
-            <label for="description" class="form-label listing-label">Description</label>
-            <textarea id="description" name="listing[description]" rows="4" class="form-control listing-input"
-              placeholder="Brief description..." required></textarea>
-            <div class="invalid-feedback">Please enter a short description</div>
-          </div>
-
-          <div class="mb-3">
-            <label for="image" class="form-label listing-label">Image</label>
-            <input id="image" name="listing[image]" type="file" class="form-control listing-input" required>
-            <div class="invalid-feedback">Please upload an image</div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-4 mb-3">
-              <label for="price" class="form-label listing-label">Price</label>
-              <input id="price" name="listing[price]" class="form-control listing-input" type="number" placeholder="e.g., 1200"
-                required>
-              <div class="invalid-feedback">Price should be valid</div>
+            <div class="mb-3">
+              <label for="title" class="form-label">Title</label>
+              <input id="title" name="listing[title]" type="text" class="form-control" required>
+              <div class="invalid-feedback">Please enter a title.</div>
             </div>
-            <div class="col-md-8 mb-3">
-              <label for="country" class="form-label listing-label">Country</label>
-              <input id="country" name="listing[country]" type="text" class="form-control listing-input" placeholder="e.g., India"
-                required>
-              <div class="invalid-feedback">Country name should be valid</div>
+
+            <div class="mb-3">
+              <label for="description" class="form-label">Description</label>
+              <textarea id="description" name="listing[description]" rows="4" class="form-control" required></textarea>
+              <div class="invalid-feedback">Please enter a description.</div>
             </div>
-          </div>
 
-          <div class="mb-4">
-            <label for="location" class="form-label listing-label">Location</label>
-            <input id="location" name="listing[location]" type="text" class="form-control listing-input"
-              placeholder="e.g., Jaipur, Rajasthan" required>
-            <div class="invalid-feedback">Location should be valid</div>
-          </div>
+            <div class="mb-3">
+              <label for="image" class="form-label">Image</label>
+              <input id="image" name="listing[image]" type="file" class="form-control" required>
+              <div class="invalid-feedback">Please upload an image.</div>
+            </div>
 
-          <button type="submit" class="btn listing-btn w-100">Publish Listing</button>
-        </form>
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label for="price" class="form-label">Price</label>
+                <input id="price" name="listing[price]" class="form-control" type="number" min="0" required>
+                <div class="invalid-feedback">Please enter a valid price.</div>
+              </div>
+              <div class="col-md-8">
+                <label for="country" class="form-label">Country</label>
+                <input id="country" name="listing[country]" type="text" class="form-control" required>
+                <div class="invalid-feedback">Please enter a country.</div>
+              </div>
+            </div>
+
+            <div class="mt-3 mb-4">
+              <label for="location" class="form-label">Location</label>
+              <input id="location" name="listing[location]" type="text" class="form-control" required>
+              <div class="invalid-feedback">Please enter a location.</div>
+            </div>
+
+            <hr class="my-4">
+            <h2 class="h6 text-uppercase text-muted mb-3">Property Details (Optional)</h2>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="propertyType" class="form-label">Property Type</label>
+                <input id="propertyType" name="listing[propertyType]" type="text" class="form-control">
+              </div>
+              <div class="col-md-6">
+                <label for="roomType" class="form-label">Room Type</label>
+                <input id="roomType" name="listing[roomType]" type="text" class="form-control">
+              </div>
+            </div>
+
+            <div class="row g-3 mt-1">
+              <div class="col-6 col-md-3">
+                <label for="guests" class="form-label">Guests</label>
+                <input id="guests" name="listing[guests]" class="form-control" type="number" min="1">
+              </div>
+              <div class="col-6 col-md-3">
+                <label for="bedrooms" class="form-label">Bedrooms</label>
+                <input id="bedrooms" name="listing[bedrooms]" class="form-control" type="number" min="0">
+              </div>
+              <div class="col-6 col-md-3">
+                <label for="beds" class="form-label">Beds</label>
+                <input id="beds" name="listing[beds]" class="form-control" type="number" min="0">
+              </div>
+              <div class="col-6 col-md-3">
+                <label for="bathrooms" class="form-label">Bathrooms</label>
+                <input id="bathrooms" name="listing[bathrooms]" class="form-control" type="number" min="0" step="0.5">
+              </div>
+            </div>
+
+            <div class="mt-3">
+              <label for="amenities" class="form-label">Amenities (comma separated)</label>
+              <input id="amenities" name="listing[amenities]" type="text" class="form-control">
+            </div>
+
+            <div class="row g-3 mt-1">
+              <div class="col-md-4">
+                <label for="minimumNights" class="form-label">Minimum Nights</label>
+                <input id="minimumNights" name="listing[minimumNights]" class="form-control" type="number" min="1">
+              </div>
+              <div class="col-md-4">
+                <label for="maximumNights" class="form-label">Maximum Nights</label>
+                <input id="maximumNights" name="listing[maximumNights]" class="form-control" type="number" min="1">
+              </div>
+              <div class="col-md-4 d-flex align-items-end">
+                <div class="form-check mb-2">
+                  <input type="hidden" name="listing[instantBookable]" value="false">
+                  <input class="form-check-input" type="checkbox" value="true" id="instantBookable" name="listing[instantBookable]">
+                  <label class="form-check-label" for="instantBookable">Instant Bookable</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="row g-3 mt-1">
+              <div class="col-md-6">
+                <label for="availability30" class="form-label">Availability (30 days)</label>
+                <input id="availability30" name="listing[availability30]" class="form-control" type="number" min="0" max="30">
+              </div>
+              <div class="col-md-6">
+                <label for="availability365" class="form-label">Availability (365 days)</label>
+                <input id="availability365" name="listing[availability365]" class="form-control" type="number" min="0" max="365">
+              </div>
+            </div>
+
+            <div class="row g-3 mt-1">
+              <div class="col-md-5">
+                <label for="hostName" class="form-label">Host Name</label>
+                <input id="hostName" name="listing[host][name]" type="text" class="form-control">
+              </div>
+              <div class="col-md-4">
+                <label for="hostResponseRate" class="form-label">Host Response Rate</label>
+                <input id="hostResponseRate" name="listing[host][responseRate]" type="text" class="form-control">
+              </div>
+              <div class="col-md-3 d-flex align-items-end">
+                <div class="form-check mb-2">
+                  <input type="hidden" name="listing[host][isSuperhost]" value="false">
+                  <input class="form-check-input" type="checkbox" value="true" id="isSuperhost" name="listing[host][isSuperhost]">
+                  <label class="form-check-label" for="isSuperhost">Superhost</label>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-dark w-100 mt-4">Publish Listing</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</section>
+</div>

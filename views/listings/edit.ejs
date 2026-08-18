@@ -1,78 +1,887 @@
 <% layout('/layouts/boilerplate') %>
 
-
 <div class="container py-4">
+
   <div class="row justify-content-center">
-    <div class="col-md-8 col-lg-6">
 
-      <div class="card shadow-lg rounded p-4" style="max-width: 720px;" data-aos="fade-up" data-aos-duration="800">
-        <h3 class="mb-4 text-center fw-bold text-dark">Edit Listing</h3>
+    <div class="col-12 col-lg-9 col-xl-8">
 
-        <form method="post" action="/listings/<%= listing._id %>?_method=PUT" class="needs-validation" enctype="multipart/form-data" novalidate>
+      <div
+        class="card border-0 shadow-lg rounded-4 p-3 p-md-4"
+        data-aos="fade-up"
+        data-aos-duration="800"
+      >
 
-          <!-- Title -->
-          <div class="mb-3" data-aos="fade-right" data-aos-delay="100">
-            <label for="title" class="form-label">Title</label>
-            <input name="listing[title]" type="text" class="form-control animate-input"
-              value="<%= listing.title %>" required>
-                <div class="invalid-feedback">Please enter a valid Title</div>
-          </div>
+        <!-- Header -->
+        <div class="text-center mb-4">
 
-          <!-- Description -->
-          <div class="mb-3" data-aos="fade-left" data-aos-delay="150">
-            <label for="description" class="form-label">Description</label>
-            <textarea name="listing[description]" rows="4" class="form-control animate-input"
-              required><%= listing.description %></textarea>
-              <div class="invalid-feedback">Please enter a valid description</div>
-          </div>
+          <h2 class="fw-bold text-dark mb-2">
+            Edit Listing
+          </h2>
 
-          <!-- Image -->
-         <div class="mb-3">
-        <h5 class="form-label">Orignal Image</h5>
-        <img src="<%= originalImageUrl %>" alt="image" class="w-300 h-300">
+          <p class="text-muted mb-0">
+            Update the details of your property
+          </p>
+
         </div>
-          <div class="mb-3" data-aos="fade-right" data-aos-delay="200">
-            <label for="image" class="form-label">New Image</label>
-            <input name="listing[image]" type='file' class="form-control animate-input"
-               >
-                
-          </div>
 
-          <!-- Price & Country -->
-          <div class="row">
-            <div class="col-md-4 mb-3" data-aos="fade-up" data-aos-delay="250">
-              <label for="price" class="form-label">Price</label>
-              <input name="listing[price]" type="number" class="form-control animate-input"
-                value="<%= listing.price %>" required>
-                 <div class="invalid-feedback">Please enter a valid price</div>
+
+        <!-- Form -->
+
+        <form
+          method="POST"
+          action="/listings/<%= listing._id %>?_method=PUT"
+          class="needs-validation"
+          enctype="multipart/form-data"
+          novalidate
+          id="editListingForm"
+        >
+
+
+          <!-- =========================================
+               BASIC INFORMATION
+          ========================================== -->
+
+          <div class="mb-4">
+
+            <h5 class="fw-semibold mb-3">
+              Basic Information
+            </h5>
+
+
+            <!-- Title -->
+
+            <div
+              class="mb-3"
+              data-aos="fade-right"
+              data-aos-delay="100"
+            >
+
+              <label
+                for="title"
+                class="form-label fw-semibold"
+              >
+                Title
+              </label>
+
+              <input
+                id="title"
+                name="listing[title]"
+                type="text"
+                class="form-control form-control-lg"
+                value="<%= listing.title || '' %>"
+                placeholder="Enter listing title"
+                required
+              >
+
+              <div class="invalid-feedback">
+                Please enter a valid title.
+              </div>
+
             </div>
-            <div class="col-md-8 mb-3" data-aos="fade-up" data-aos-delay="300">
-              <label for="country" class="form-label">Country</label>
-              <input name="listing[country]" type="text" class="form-control animate-input"
-                value="<%= listing.country %>" required>
-                 <div class="invalid-feedback">Please enter a valid country</div>
-                
+
+
+            <!-- Description -->
+
+            <div
+              class="mb-3"
+              data-aos="fade-left"
+              data-aos-delay="150"
+            >
+
+              <label
+                for="description"
+                class="form-label fw-semibold"
+              >
+                Description
+              </label>
+
+              <textarea
+                id="description"
+                name="listing[description]"
+                rows="5"
+                class="form-control"
+                placeholder="Describe your property..."
+                required
+              ><%= listing.description || '' %></textarea>
+
+              <div class="invalid-feedback">
+                Please enter a valid description.
+              </div>
+
             </div>
+
           </div>
 
-          <!-- Location -->
-          <div class="mb-3" data-aos="fade-left" data-aos-delay="350">
-            <label for="location" class="form-label">Location</label>
-            <input name="listing[location]" type="text" class="form-control animate-input"
-              value="<%= listing.location %>" required>
-                 <div class="invalid-feedback">Please enter a valid location</div>
-              
+
+          <!-- =========================================
+               IMAGE
+          ========================================== -->
+
+          <div class="mb-4">
+
+            <h5 class="fw-semibold mb-3">
+              Property Image
+            </h5>
+
+
+            <!-- Current Image -->
+
+            <div
+              class="mb-3"
+              data-aos="fade-up"
+            >
+
+              <label class="form-label fw-semibold">
+                Current Image
+              </label>
+
+              <div class="text-center">
+
+                <img
+                  src="<%= originalImageUrl || '/images/placeholder.jpg' %>"
+                  alt="<%= listing.title || 'Listing image' %>"
+                  class="img-fluid rounded-4 shadow-sm border"
+                  style="
+                    width: 100%;
+                    max-width: 420px;
+                    height: 260px;
+                    object-fit: cover;
+                  "
+                >
+
+              </div>
+
+            </div>
+
+
+            <!-- New Image -->
+
+            <div
+              class="mb-3"
+              data-aos="fade-right"
+              data-aos-delay="100"
+            >
+
+              <label
+                for="image"
+                class="form-label fw-semibold"
+              >
+                Replace Image
+              </label>
+
+              <input
+                id="image"
+                name="listing[image]"
+                type="file"
+                class="form-control"
+                accept="image/*"
+              >
+
+              <div class="form-text">
+                Leave this empty if you want to keep the current image.
+              </div>
+
+            </div>
+
           </div>
 
-          <!-- Button -->
-          <div class="d-flex justify-content-center mt-3" data-aos="zoom-in" data-aos-delay="400">
-           <button type="submit" class="btn btn-custom-red shadow-sm hover-zoom px-4">Update Listing</button>
+
+          <!-- =========================================
+               PRICE & LOCATION
+          ========================================== -->
+
+          <div class="mb-4">
+
+            <h5 class="fw-semibold mb-3">
+              Location & Pricing
+            </h5>
+
+
+            <div class="row">
+
+
+              <!-- Price -->
+
+              <div
+                class="col-md-4 mb-3"
+                data-aos="fade-up"
+                data-aos-delay="100"
+              >
+
+                <label
+                  for="price"
+                  class="form-label fw-semibold"
+                >
+                  Price
+                </label>
+
+                <div class="input-group">
+
+                  <span class="input-group-text">
+                    ₹
+                  </span>
+
+                  <input
+                    id="price"
+                    name="listing[price]"
+                    type="number"
+                    min="0"
+                    step="1"
+                    class="form-control"
+                    value="<%= listing.price ?? '' %>"
+                    required
+                  >
+
+                </div>
+
+                <div class="invalid-feedback">
+                  Please enter a valid price.
+                </div>
+
+              </div>
+
+
+              <!-- Country -->
+
+              <div
+                class="col-md-8 mb-3"
+                data-aos="fade-up"
+                data-aos-delay="150"
+              >
+
+                <label
+                  for="country"
+                  class="form-label fw-semibold"
+                >
+                  Country
+                </label>
+
+                <input
+                  id="country"
+                  name="listing[country]"
+                  type="text"
+                  class="form-control"
+                  value="<%= listing.country || '' %>"
+                  placeholder="India"
+                  required
+                >
+
+                <div class="invalid-feedback">
+                  Please enter a valid country.
+                </div>
+
+              </div>
+
+
+              <!-- Location -->
+
+              <div
+                class="col-12 mb-3"
+                data-aos="fade-left"
+                data-aos-delay="200"
+              >
+
+                <label
+                  for="location"
+                  class="form-label fw-semibold"
+                >
+                  Location
+                </label>
+
+                <input
+                  id="location"
+                  name="listing[location]"
+                  type="text"
+                  class="form-control"
+                  value="<%= listing.location || '' %>"
+                  placeholder="Bhopal, Madhya Pradesh"
+                  required
+                >
+
+                <div class="invalid-feedback">
+                  Please enter a valid location.
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- =========================================
+               PROPERTY DETAILS
+          ========================================== -->
+
+          <div class="mb-4">
+
+            <h5 class="fw-semibold mb-3">
+              Property Details
+            </h5>
+
+
+            <!-- Property / Room Type -->
+
+            <div class="row">
+
+              <div class="col-md-6 mb-3">
+
+                <label
+                  for="propertyType"
+                  class="form-label fw-semibold"
+                >
+                  Property Type
+                </label>
+
+                <input
+                  id="propertyType"
+                  name="listing[propertyType]"
+                  type="text"
+                  class="form-control"
+                  value="<%= listing.propertyType || '' %>"
+                  placeholder="Apartment, House, Villa..."
+                >
+
+              </div>
+
+
+              <div class="col-md-6 mb-3">
+
+                <label
+                  for="roomType"
+                  class="form-label fw-semibold"
+                >
+                  Room Type
+                </label>
+
+                <input
+                  id="roomType"
+                  name="listing[roomType]"
+                  type="text"
+                  class="form-control"
+                  value="<%= listing.roomType || '' %>"
+                  placeholder="Entire place, Private room..."
+                >
+
+              </div>
+
+            </div>
+
+
+            <!-- Guests / Bedrooms / Beds / Bathrooms -->
+
+            <div class="row">
+
+              <div class="col-6 col-md-3 mb-3">
+
+                <label
+                  for="guests"
+                  class="form-label fw-semibold"
+                >
+                  Guests
+                </label>
+
+                <input
+                  id="guests"
+                  name="listing[guests]"
+                  type="number"
+                  min="1"
+                  class="form-control"
+                  value="<%= listing.guests ?? '' %>"
+                >
+
+              </div>
+
+
+              <div class="col-6 col-md-3 mb-3">
+
+                <label
+                  for="bedrooms"
+                  class="form-label fw-semibold"
+                >
+                  Bedrooms
+                </label>
+
+                <input
+                  id="bedrooms"
+                  name="listing[bedrooms]"
+                  type="number"
+                  min="0"
+                  class="form-control"
+                  value="<%= listing.bedrooms ?? '' %>"
+                >
+
+              </div>
+
+
+              <div class="col-6 col-md-3 mb-3">
+
+                <label
+                  for="beds"
+                  class="form-label fw-semibold"
+                >
+                  Beds
+                </label>
+
+                <input
+                  id="beds"
+                  name="listing[beds]"
+                  type="number"
+                  min="0"
+                  class="form-control"
+                  value="<%= listing.beds ?? '' %>"
+                >
+
+              </div>
+
+
+              <div class="col-6 col-md-3 mb-3">
+
+                <label
+                  for="bathrooms"
+                  class="form-label fw-semibold"
+                >
+                  Bathrooms
+                </label>
+
+                <input
+                  id="bathrooms"
+                  name="listing[bathrooms]"
+                  type="number"
+                  min="0"
+                  step="0.5"
+                  class="form-control"
+                  value="<%= listing.bathrooms ?? '' %>"
+                >
+
+              </div>
+
+            </div>
+
+
+            <!-- Amenities -->
+
+            <div class="mb-3">
+
+              <label
+                for="amenities"
+                class="form-label fw-semibold"
+              >
+                Amenities
+              </label>
+
+              <input
+                id="amenities"
+                name="listing[amenities]"
+                type="text"
+                class="form-control"
+                value="<%= Array.isArray(listing.amenities) ? listing.amenities.join(', ') : (listing.amenities || '') %>"
+                placeholder="WiFi, Kitchen, Parking, Pool..."
+              >
+
+              <div class="form-text">
+                Separate multiple amenities with commas.
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- =========================================
+               AVAILABILITY
+          ========================================== -->
+
+          <div class="mb-4">
+
+            <h5 class="fw-semibold mb-3">
+              Availability
+            </h5>
+
+
+            <div class="row">
+
+              <!-- Minimum Nights -->
+
+              <div class="col-md-4 mb-3">
+
+                <label
+                  for="minimumNights"
+                  class="form-label fw-semibold"
+                >
+                  Minimum Nights
+                </label>
+
+                <input
+                  id="minimumNights"
+                  name="listing[minimumNights]"
+                  type="number"
+                  min="1"
+                  class="form-control"
+                  value="<%= listing.minimumNights ?? '' %>"
+                >
+
+              </div>
+
+
+              <!-- Maximum Nights -->
+
+              <div class="col-md-4 mb-3">
+
+                <label
+                  for="maximumNights"
+                  class="form-label fw-semibold"
+                >
+                  Maximum Nights
+                </label>
+
+                <input
+                  id="maximumNights"
+                  name="listing[maximumNights]"
+                  type="number"
+                  min="1"
+                  class="form-control"
+                  value="<%= listing.maximumNights ?? '' %>"
+                >
+
+              </div>
+
+
+              <!-- Instant Bookable -->
+
+              <div class="col-md-4 mb-3 d-flex align-items-end">
+
+                <div class="form-check mb-2">
+
+                  <input
+                    type="hidden"
+                    name="listing[instantBookable]"
+                    value="false"
+                  >
+
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="true"
+                    id="instantBookable"
+                    name="listing[instantBookable]"
+                    <%= listing.instantBookable ? 'checked' : '' %>
+                  >
+
+                  <label
+                    class="form-check-label fw-semibold"
+                    for="instantBookable"
+                  >
+                    Instant Bookable
+                  </label>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- Availability -->
+
+            <div class="row">
+
+              <div class="col-md-6 mb-3">
+
+                <label
+                  for="availability30"
+                  class="form-label fw-semibold"
+                >
+                  Availability (next 30 days)
+                </label>
+
+                <input
+                  id="availability30"
+                  name="listing[availability30]"
+                  type="number"
+                  min="0"
+                  max="30"
+                  class="form-control"
+                  value="<%= listing.availability30 ?? '' %>"
+                >
+
+              </div>
+
+
+              <div class="col-md-6 mb-3">
+
+                <label
+                  for="availability365"
+                  class="form-label fw-semibold"
+                >
+                  Availability (next 365 days)
+                </label>
+
+                <input
+                  id="availability365"
+                  name="listing[availability365]"
+                  type="number"
+                  min="0"
+                  max="365"
+                  class="form-control"
+                  value="<%= listing.availability365 ?? '' %>"
+                >
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- =========================================
+               HOST INFORMATION
+          ========================================== -->
+
+          <div class="mb-4">
+
+            <h5 class="fw-semibold mb-3">
+              Host Information
+            </h5>
+
+
+            <div class="row">
+
+
+              <!-- Host Name -->
+
+              <div class="col-md-5 mb-3">
+
+                <label
+                  for="hostName"
+                  class="form-label fw-semibold"
+                >
+                  Host Name
+                </label>
+
+                <input
+                  id="hostName"
+                  name="listing[host][name]"
+                  type="text"
+                  class="form-control"
+                  value="<%= listing.host?.name || '' %>"
+                  placeholder="Host name"
+                >
+
+              </div>
+
+
+              <!-- Response Rate -->
+
+              <div class="col-md-4 mb-3">
+
+                <label
+                  for="hostResponseRate"
+                  class="form-label fw-semibold"
+                >
+                  Host Response Rate
+                </label>
+
+                <input
+                  id="hostResponseRate"
+                  name="listing[host][responseRate]"
+                  type="text"
+                  class="form-control"
+                  value="<%= listing.host?.responseRate || '' %>"
+                  placeholder="95%"
+                >
+
+              </div>
+
+
+              <!-- Superhost -->
+
+              <div class="col-md-3 mb-3 d-flex align-items-end">
+
+                <div class="form-check mb-2">
+
+                  <input
+                    type="hidden"
+                    name="listing[host][isSuperhost]"
+                    value="false"
+                  >
+
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="true"
+                    id="isSuperhost"
+                    name="listing[host][isSuperhost]"
+                    <%= listing.host?.isSuperhost ? 'checked' : '' %>
+                  >
+
+                  <label
+                    class="form-check-label fw-semibold"
+                    for="isSuperhost"
+                  >
+                    Superhost
+                  </label>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- =========================================
+               BUTTONS
+          ========================================== -->
+
+          <div
+            class="d-flex flex-column flex-sm-row justify-content-center gap-2 mt-4"
+            data-aos="zoom-in"
+            data-aos-delay="400"
+          >
+
+            <a
+              href="/listings/<%= listing._id %>"
+              class="btn btn-outline-secondary px-4"
+              id="cancelButton"
+            >
+              Cancel
+            </a>
+
+
+            <button
+              type="submit"
+              class="btn btn-custom-red shadow-sm px-4"
+              id="updateButton"
+            >
+
+              <span id="updateButtonText">
+                Update Listing
+              </span>
+
+              <span
+                id="updateButtonSpinner"
+                class="spinner-border spinner-border-sm ms-2 d-none"
+                role="status"
+                aria-hidden="true"
+              ></span>
+
+            </button>
 
           </div>
 
         </form>
+
       </div>
 
     </div>
+
   </div>
+
 </div>
+
+
+<!-- =========================================
+     FORM SCRIPT
+========================================== -->
+
+<script>
+
+    (() => {
+
+        "use strict";
+
+        const form =
+            document.getElementById("editListingForm");
+
+        const button =
+            document.getElementById("updateButton");
+
+        const buttonText =
+            document.getElementById("updateButtonText");
+
+        const spinner =
+            document.getElementById("updateButtonSpinner");
+
+
+        if (!form) return;
+
+
+        /*
+         * Bootstrap validation
+         */
+
+        form.addEventListener("submit", function (event) {
+
+            if (!form.checkValidity()) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                form.classList.add("was-validated");
+
+                return;
+            }
+
+
+            /*
+             * Prevent double submission
+             */
+
+            if (button) {
+
+                button.disabled = true;
+
+            }
+
+
+            /*
+             * Show loading state
+             */
+
+            if (buttonText) {
+
+                buttonText.textContent =
+                    "Updating...";
+
+            }
+
+
+            if (spinner) {
+
+                spinner.classList.remove("d-none");
+
+            }
+
+
+            /*
+             * Show CheckInly global loader
+             */
+
+            const pageLoader =
+                document.getElementById("page-loader");
+
+            if (pageLoader) {
+
+                pageLoader.classList.remove("hide");
+
+            }
+
+        });
+
+
+        /*
+         * Bootstrap validation class
+         */
+
+        form.addEventListener("submit", function () {
+
+            form.classList.add("was-validated");
+
+        });
+
+    })();
+
+</script>

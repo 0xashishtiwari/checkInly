@@ -1,13 +1,18 @@
 const Listing = require('../models/listing');
 const {Review} = require('../models/review');
+const ExpressError = require('../utils/ExpressError');
 
 module.exports.createReview = async(req , res)=>{
    
     let {id} = req.params
     let listing =  await Listing.findById(id);
+    if (!listing) {
+        throw new ExpressError(404, 'Listing not found');
+    }
+
     let newReview = new Review(req.body.review);
+    newReview.listing = listing._id;
     newReview.author = req.user._id;
-    console.log(newReview);
     listing.reviews.push(newReview);
 
     await newReview.save();

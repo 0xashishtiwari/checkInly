@@ -1,5 +1,26 @@
 const Listing = require('../models/listing');
 
+function normalizeListingPayload(listingPayload = {}) {
+  const normalized = { ...listingPayload };
+
+  if (typeof normalized.amenities === 'string') {
+    normalized.amenities = normalized.amenities
+      .split(',')
+      .map((item) => item.trim())
+      .filter(Boolean);
+  }
+
+  if (normalized.instantBookable !== undefined) {
+    normalized.instantBookable = normalized.instantBookable === true || normalized.instantBookable === 'true';
+  }
+
+  if (normalized.host?.isSuperhost !== undefined) {
+    normalized.host.isSuperhost = normalized.host.isSuperhost === true || normalized.host.isSuperhost === 'true';
+  }
+
+  return normalized;
+}
+
 module.exports.index = async (req , res)=>{
   
   const {search , location , country , minPrice , maxPrice ,sort="newest" , page=1} = req.query;
@@ -91,19 +112,27 @@ module.exports.renderNewForm = (req ,res)=>{
   
 };
 
-module.exports.showListing = async (req ,res)=>{
-  let {id} = req.params;
-  const listing  =  await Listing.findById(id).populate({path : 'reviews' , populate  : {path : 'author'}}).populate('owner');
-  if(!listing){
-    req.flash("error" , "Listing you requested for does not exist");
-    res.redirect('/listings');
-  
-  }else{
-    res.render('listings/show.ejs' , {listing});
-  }
+module.exports.showListing = async (req, res) => {
+    const { id } = req.params;
 
-  
-}
+    const listing = await Listing.findById(id)
+        .populate("owner")
+        .populate("reviews");
+
+    if (!listing) {
+        req.flash(
+            "error",
+            "Listing you requested for does not exist"
+        );
+
+        return res.redirect("/listings");
+    }
+
+    res.render("listings/show.ejs", {
+        listing
+    });
+};
+
 
 module.exports.createListing = async(req ,res ,next)=>{
    
@@ -111,7 +140,8 @@ module.exports.createListing = async(req ,res ,next)=>{
     let filename = req.file.filename;
     // console.log(url , filename);
 
-   const newListing = new Listing(req.body.listing); 
+  const listingData = normalizeListingPayload(req.body.listing);
+  const newListing = new Listing(listingData); 
    newListing.image = {url , filename};
 
    let ownedby = req.user.id;
@@ -141,7 +171,7 @@ module.exports.renderEditForm = async(req , res)=>{
 
 module.exports.updateListing = async(req , res)=>{
       let {id} = req.params;
-      let listingData = {...req.body.listing};
+  let listingData = normalizeListingPayload({...req.body.listing});
       if(req.file){
         let url = req.file.path
        let filename = req.file.filename;

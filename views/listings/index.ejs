@@ -1,11 +1,28 @@
 <% layout('/layouts/boilerplate') %>
 
-    <% const current=Number(currentPage) || 1; const pages=Number(totalPages) || 1; const params={ search: search || ""
+    <% const USD_TO_INR = 83;
+        const toInr = (usdValue) => Math.round(Number(usdValue || 0) * USD_TO_INR);
+        const current=Number(currentPage) || 1; const pages=Number(totalPages) || 1; const params={ search: search || ""
         , location: location || "" , country: country || "" , minPrice: minPrice || "" , maxPrice: maxPrice || "" ,
         sort: sort || "newest" }; const buildPageUrl=(pageNo)=> {
         const q = new URLSearchParams({ ...params, page: String(pageNo) });
         return `/listings?${q.toString()}`;
         };
+
+        const pageTokens = [];
+        if (pages <= 7) {
+        for (let p = 1; p <= pages; p++) pageTokens.push(p);
+        } else {
+        pageTokens.push(1);
+        const start = Math.max(2, current - 1);
+        const end = Math.min(pages - 1, current + 1);
+
+        if (start > 2) pageTokens.push("ellipsis-left");
+        for (let p = start; p <= end; p++) pageTokens.push(p);
+        if (end < pages - 1) pageTokens.push("ellipsis-right");
+
+        pageTokens.push(pages);
+        }
         %>
 
         <section class="catalog-shell">
@@ -43,7 +60,7 @@
                     </div>
                 </div>
 
-              
+
 
                 <div class="catalog-toolbar">
 
@@ -68,31 +85,57 @@
                 </div>
 
                 <% if (allListings.length) { %>
-                    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4 mt-1">
-                        <% for (let listing of allListings) { %>
-                            <div class="col">
-                                <a href="/listings/<%= listing._id %>" class="listing-link catalog-link">
-                                    <div class="card catalog-card h-100">
-                                        <img src="<%= listing.image.url %>" class="card-img-top catalog-card-image"
-                                            alt="listing image">
-                                        <div class="card-img-overlay"></div>
-                                        <div class="card-body catalog-card-body">
-                                            <p class="catalog-card-title">
-                                                <%= listing.title %>
-                                            </p>
-                                            <p class="catalog-card-meta">
-                                                <%= listing.location %>, <%= listing.country %>
-                                            </p>
-                                            <p class="catalog-card-price">
-                                                &#8377;<%= listing.price.toLocaleString('en-IN') %>/night
-                                                    <span class="tax-info"> +18% GST</span>
-                                            </p>
-                                        </div>
+
+                    <div class="catalog-results-layout">
+
+                        <!-- Listings -->
+                        <div class="catalog-listings-column">
+                            <div class="row row-cols-1 row-cols-md-2 g-4 mt-1">
+
+                                <% for (let listing of allListings) { %>
+
+                                    <div class="col">
+                                        <a href="/listings/<%= listing._id %>" class="listing-link catalog-link">
+                                            <div class="card catalog-card h-100">
+
+                                                <img src="<%= listing.image.url %>"
+                                                    class="card-img-top catalog-card-image" alt="listing image">
+
+                                                <div class="card-img-overlay"></div>
+
+                                                <div class="card-body catalog-card-body">
+
+                                                    <p class="catalog-card-title">
+                                                        <%= listing.title %>
+                                                    </p>
+
+                                                    <p class="catalog-card-meta">
+                                                        <%= listing.location %>, <%= listing.country %>
+                                                    </p>
+
+                                                    <p class="catalog-card-price">
+                                                        &#8377;<%= toInr(listing.price).toLocaleString('en-IN') %>/night
+                                                            <span class="tax-info"> +18% GST</span>
+                                                    </p>
+
+                                                </div>
+                                            </div>
+                                        </a>
                                     </div>
-                                </a>
+
+                                    <% } %>
+
                             </div>
-                            <% } %>
+                        </div>
+
+
+                        <!-- Map -->
+                        <div class="catalog-map-column">
+                            <div id="search-map"></div>
+                        </div>
+
                     </div>
+
                     <% } else { %>
                         <div class="catalog-empty">
                             <i class="fa-regular fa-compass"></i>
@@ -104,23 +147,36 @@
 
                             <% if (pages> 1) { %>
                                 <nav aria-label="Listings pagination" class="catalog-pagination-wrap">
+                                    <p class="catalog-pagination-status">Page <%= current %> of <%= pages %></p>
                                     <ul class="pagination catalog-pagination">
                                         <li class="page-item <%= current === 1 ? 'disabled' : '' %>">
-                                            <a class="page-link"
-                                                href="<%= current === 1 ? '#' : buildPageUrl(current - 1) %>">Previous</a>
+                                            <% if (current === 1) { %>
+                                                <span class="page-link" aria-disabled="true">Prev</span>
+                                            <% } else { %>
+                                                <a class="page-link" href="<%= buildPageUrl(current - 1) %>" aria-label="Go to previous page">Prev</a>
+                                            <% } %>
                                         </li>
 
-                                        <% for (let p=1; p <=pages; p++) { %>
-                                            <li class="page-item <%= p === current ? 'active' : '' %>">
-                                                <a class="page-link" href="<%= buildPageUrl(p) %>">
-                                                    <%= p %>
-                                                </a>
-                                            </li>
+                                        <% for (let token of pageTokens) { %>
+                                            <% if (typeof token === 'string') { %>
+                                                <li class="page-item disabled" aria-hidden="true">
+                                                    <span class="page-link catalog-page-ellipsis">&hellip;</span>
+                                                </li>
+                                            <% } else { %>
+                                                <li class="page-item <%= token === current ? 'active' : '' %>">
+                                                    <a class="page-link" href="<%= buildPageUrl(token) %>" aria-label="Go to page <%= token %>" <%= token === current ? 'aria-current="page"' : '' %>>
+                                                        <%= token %>
+                                                    </a>
+                                                </li>
+                                            <% } %>
                                             <% } %>
 
                                                 <li class="page-item <%= current === pages ? 'disabled' : '' %>">
-                                                    <a class="page-link"
-                                                        href="<%= current === pages ? '#' : buildPageUrl(current + 1) %>">Next</a>
+                                                    <% if (current === pages) { %>
+                                                        <span class="page-link" aria-disabled="true">Next</span>
+                                                    <% } else { %>
+                                                        <a class="page-link" href="<%= buildPageUrl(current + 1) %>" aria-label="Go to next page">Next</a>
+                                                    <% } %>
                                                 </li>
                                     </ul>
                                 </nav>
@@ -257,6 +313,24 @@
             </div>
 
         </div>
+
+        <script>
+    window.searchListings = <%- JSON.stringify(
+        allListings.map(listing => ({
+            id: String(listing._id),
+            title: listing.title,
+            price: listing.price,
+            location: listing.location,
+            country: listing.country,
+            coordinates: listing.geometry
+                ? listing.geometry.coordinates
+                : null
+        }))
+    ) %>;
+</script>
+
+
+
 
 
         <script>
