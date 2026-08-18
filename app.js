@@ -6,9 +6,9 @@ if(process.env.NODE_ENV != "production"){
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const PORT = 8080;
+const PORT = process.env.PORT;
 
-const dbUrl = process.env.ATLASDB_URL ;
+const dbUrl = process.env.ATLASDB_URL;
 
 
 
